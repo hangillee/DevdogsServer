@@ -3,7 +3,7 @@ var router = express.Router();
 
 var mongoose = require('mongoose');
 var db = mongoose.connection;
-var UserSchema = require('./DB/schema');
+var UserSchema = require('../DB/schema');
 var Users = mongoose.model('Users', UserSchema);
 
 db.on('error', console.error);
