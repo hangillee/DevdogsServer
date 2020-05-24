@@ -44,15 +44,15 @@ router.post('/register', function(req, res) {
 });
 
 router.post('/login', function(req, res) {
-  console.log(req.body.id);
-  console.log(req.body.pw);
-  
   Users.findOne({"id":req.body.id}, function(err, result){
     if(!result) {
       res.writeHead(404, {"Context-Type" : "applicaion/json; charset=utf-8"});
     }
     else {
       if (result.pw == req.body.pw) {
+        req.session.user = result._id;
+        req.session.save();
+        console.log(req.sessionID);
         res.writeHead(200, {"Context-Type" : "applicaion/json; charset=utf-8"});
       }
       else {
@@ -61,6 +61,20 @@ router.post('/login', function(req, res) {
     }
     res.end();
   });
+});
+
+//Posts submit logic
+router.post('/submit', function(req, res) {
+  console.log(req.sessionID);
+  Posts.create({
+    _id: new mongoose.Types.ObjectId,
+    title: req.body.title,
+    author: req.session.user,
+    content: req.body.content,
+    date: new Date()
+  });
+  res.writeHead(200, {"Context-Type" : "applicaion/json; charset=utf-8"});
+  res.end();
 });
 
 module.exports = router;
