@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  form(action='/post/submit' method='POST')
+    input(name='title' placeholder='title' required)
+    input(name='content' placeholder='contents' required)
+    button(type='submit') write
