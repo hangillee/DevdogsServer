@@ -31,23 +31,30 @@ router.post('/register', function(req, res) {
 });
 
 router.post('/login', function(req, res, next) {
-  Users.findOne({"id":req.body.id}, function(err, result){
-    if(!result) {
-      res.writeHead(404, {"Context-Type" : "applicaion/json; charset=utf-8"});
-    }
-    else {
-      if (result.pw == req.body.pw) {
-        req.session.user = result._id;
-        req.session.save();
-        res.writeHead(200, {"Context-Type" : "applicaion/json; charset=utf-8"});
-        console.log(req.session.user);
-      }
-      else {
+  console.log(req.sessionID);
+  if(req.session.user) {
+    console.log("Already Loginned User");
+    res.end();
+  }
+  else {
+    Users.findOne({"id":req.body.id}, function(err, result){
+      if(!result) {
         res.writeHead(404, {"Context-Type" : "applicaion/json; charset=utf-8"});
       }
-    }
-    res.end();
-  });
+      else {
+        if (result.pw == req.body.pw) {
+          req.session.user = result._id;
+          req.session.save();
+          res.writeHead(200, {"Context-Type" : "applicaion/json; charset=utf-8"});
+          console.log(req.session.user);
+        }
+        else {
+          res.writeHead(404, {"Context-Type" : "applicaion/json; charset=utf-8"});
+        }
+      }
+      res.end();
+    });
+  }
 });
 
 module.exports = router;
