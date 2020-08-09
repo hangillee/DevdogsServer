@@ -58,7 +58,6 @@ router.post('/register', function(req, res) {
 });
 
 router.post('/login', function(req, res, next) {
-  console.log(req.sessionID);
   if(req.session.user) {
     console.log("Already Loginned User");
     res.end();
@@ -73,7 +72,6 @@ router.post('/login', function(req, res, next) {
           req.session.user = result;
           req.session.save();
           res.writeHead(200, {"Context-Type" : "applicaion/json; charset=utf-8"});
-          console.log(req.session.user);
         }
         else {
           res.writeHead(404, {"Context-Type" : "applicaion/json; charset=utf-8"});
@@ -148,7 +146,6 @@ router.get('/auth', function(req, res) {
       res.writeHead(404, {"Context-Type" : "applicaion/json; charset=utf-8"});
     }
     else {
-      console.log(result);
       if (result.code == "xxxx") {
         res.writeHead(200, {"Context-Type" : "applicaion/json; charset=utf-8"});
       }
@@ -172,13 +169,13 @@ router.get('/settings', function(req, res) {
   if (sess.user) {
     var isAuthorized = (sess.user.code == "xxxx");
     console.log(isAuthorized);
-    console.log(sess.user.code);
 
     var output = JSON.parse('{}');
     output.isAuthorized = isAuthorized;
     res.status(200).send(JSON.stringify(output));
     res.end();
-  } else {
+  }
+  else {
     res.status(300).send("<h1>Please Log in</h1>");
     res.end();
   }
@@ -190,7 +187,8 @@ router.get('/login', function(req, res) {
 
   if (!sess.user) {
     res.render('login');
-  } else {
+  }
+  else {
     // res.writeHead(200, {"Content-Type" : "text/html; charset=utf-8"});
     res.send("<h1>Already Logged in</h1>");
     res.end();

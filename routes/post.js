@@ -10,9 +10,7 @@ router.get('/', function(req, res, next) {
 })
 
 router.get('/list', function(req, res, next) {
-    console.log("Session Before " + req.session.user);
     res.writeHead(200, {'Content-Type': 'text/json; charset=utf-8'});
-    console.log("Session After " + req.session.user);
 
     var result;
     var authors = []
